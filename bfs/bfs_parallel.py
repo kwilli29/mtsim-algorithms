@@ -19,10 +19,6 @@ def bfs_g500_migrate(args): #(F, root):
 
     # N = array of sizes of all the lists in graph I think?
     N = len(G[0]) # N = # of verts / row of matrix I think
-    #***************#
-    G0 = mtsim.mt_array_read(G, 0)
-    N = len(G0)
-    # read G[0]?
 
     parent = [-1]*N 
     #***************#
@@ -58,9 +54,7 @@ def bfs_g500_migrate(args): #(F, root):
         cnt = 0
         for j in range(len(G)):
             # G[j][v] READ
-            Gjv = mtsim.mt_array_read(mtsim.mt_array_read(G, j), v)
-
-            if Gjv != 0: # if G[j][v] != 0:
+            if G[j][v] != 0:
                 mtsim.mt_array_write(I, cnt, j) 
                 cnt+=1
 
