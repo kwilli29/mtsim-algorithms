@@ -5,6 +5,8 @@ import heapq
 import numpy as np
 from scipy import sparse
 
+## IGNORE - does not work yet ##
+
 def validate(parent, edgelist, search_key, d, is_sssp):
 
      out = 0 # 0 no error

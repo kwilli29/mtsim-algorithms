@@ -85,14 +85,15 @@ def sssp_g500_migrate(args): #(F, root):
                 mini_ind = i
                 mini_dist = d[k] # read
                 #***************#
+                mini_dist = mtsim.mt_array_read(d, k)
 
         v = Q[mini_ind] # read
         #***************#
         v = mtsim.mt_array_read(Q, k)
 
-        Q = np.setdiff1d(Q, [v])        #### reallocate array ?
+        Q = np.setdiff1d(Q, [v])        #### how to reallocate array ?
         #***************#
-        # alloc                          #### ????????
+        # alloc                         #### might need to be double checked
         # write if value not v
         mtsim.mt_array_malloc(Q, mtsim.mt_block_cyclic, [0, 2, 16])
         cnt=0
@@ -120,6 +121,9 @@ def sssp_g500_migrate(args): #(F, root):
         # for all nonzero vals in all rows of G
         # in column v
         # in I?
+        mtsim.mt_array_malloc(V, mtsim.mt_block_cyclic, [0, 2, 16])
+
+        # TODO: unsure how to write to V         
 
         for k in range(len(I)):
             u = I[k] # read

@@ -166,7 +166,7 @@ def main():
     #'''
     #G = read_g500_file()
 
-    # Parallel: search keys for a handful of random starting points to concurrently run sssp from?
+    # Parallel: search keys
 
     # Kernel 3
     root = 0 # serial bfs
