@@ -7,9 +7,9 @@ from scipy import sparse
 
 import edgelist_g500 as edgeg500
 import multidigraph as multig500
-import bfs_parallel as bfs
-import sssp_parallel as sssp
-import validate
+import bfs.bfs_parallel as bfs
+import sssp.sssp_parallel as sssp
+
 import mtsim
 
 # APROX. CUSTOM TEENY #
