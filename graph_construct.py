@@ -6,46 +6,7 @@ from scipy import sparse
 from collections import defaultdict
 import csv
 
-def read_file():
-    with open('text/edgelist_test_002.txt') as f:
-         ls = f.read()
-
-    startVerts, endVerts, weights = ls.splitlines()
-
-    startVerts = map(float, startVerts.split(" ")[:-1])
-    endVerts = map(float, endVerts.split(" ")[:-1])
-    weights = map(float, weights.split(" ")[:-1])
-
-    edgelist = [startVerts,endVerts,weights]
-
-    return edgelist
-
-def CSRtoDict(csr):
-
-    csr = csr.toarray()
-    D = defaultdict(list)
-
-    for i, row in enumerate(csr):
-        for j, num in enumerate(row):
-            if num:
-                D[i].append((j, float(csr[i][j]))) 
-
-    fields = ['node1', 'node2', 'weight']
-    filename = 'csv/graph_generation_000.csv'
-
-    with open(filename, 'w') as csvfile:
-        # creating a csv dict writer object
-        writer = csv.writer(csvfile)
-
-        # writing headers (field names)
-        writer.writerow(fields)
-
-        # write rows - node1, node2, weight
-        for k, v in D.items():
-            for x in v:
-                writer.writerow([k, x[0], x[1]])
-
-    return D
+import convert_graph_formats as convert
 
 def random_graph_gen(n, G): # not Tree
 
@@ -119,7 +80,7 @@ def kernel1_g500(edgelist): # Tree?
 
     # Create matrix & make sure it's square
 
-    F = sparse.csr_matrix((np.ones((len(edgelist[0]),), dtype=int), (edgelist[0], (edgelist[1]))), shape=(N,N), dtype=float)
+    # F = sparse.csr_matrix((np.ones((len(edgelist[0]),), dtype=int), (edgelist[0], (edgelist[1]))), shape=(N,N), dtype=float)
     FW = sparse.csr_matrix((list(edgelist[2]), (edgelist[0], (edgelist[1]))), shape=(N,N), dtype=float)
 
     # Symmetrize to model an undirected graph
@@ -133,11 +94,10 @@ def kernel1_g500(edgelist): # Tree?
 
     return G
 
-
 def main():
 
     ## Graph 500 Generator Method 1 ##
-    edgelist = read_file()
+    edgelist = convert.read_file()
 
     edgelist[0] = list(map(int, edgelist[0])) # make start and end verts ints
     edgelist[1] = list(map(int, edgelist[1]))

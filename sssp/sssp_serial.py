@@ -7,79 +7,11 @@ import heapq
 import numpy as np
 from scipy import sparse
 
+import convert_graph_formats as convert
 import edgelist_g500 as edgeg500
 import graph_construct as multig500
 SCALE_TEENY = 10
 EDGEF_TEENY = 16
-
-def read_kfile():
-    with open('text/output.txt') as f:
-         ls = f.read()
-
-    n, numEdges, adjMatrix = ls.splitlines()
-
-    n = int(n)
-    numEdges = int(numEdges)
-
-    adjMatrix = map(int, adjMatrix.split(" "))
-
-    return n, numEdges, adjMatrix
-def read_file():
-    with open('text/edgelist_test_003.txt') as f:
-         ls = f.read()
-
-    startVerts, endVerts, weights = ls.splitlines()
-
-    startVerts = map(float, startVerts.split(" ")[:-1])
-    endVerts = map(float, endVerts.split(" ")[:-1])
-    weights = map(float, weights.split(" ")[:-1])
-
-    edgelist = [startVerts,endVerts,weights]
-
-    return edgelist
-
-def matToCSR(matrix, n):
-    
-    matrix = list(matrix)
-    matrix = np.reshape(matrix, (n,n))
-    csr_mat = sparse.csr_matrix(matrix)
-
-    return csr_mat
-
-def CSRtoMat(csr, n):
-    matrix = np.reshape(csr.toarray(), (1, n*n))
-    return matrix[0] # reshape = [*[0 0 ... 0 0]*]
-
-def matTolist(matrix, n):
-
-    matrix = list(matrix)
-
-    adjList = defaultdict(list)
-
-    for index, k in enumerate(matrix):
-        
-          i = index//n
-          j = index%n
-
-          if k != 0:
-            adjList[i].append(j) ######### 'malloc'?
-
-    return adjList
-
-def CSRtoDict(csr):
-    csr = csr.toarray()
-    D = defaultdict(list)
-
-    for i, row in enumerate(csr):
-        for j, num in enumerate(row):
-            if num:
-                D[i].append((j, float(csr[i][j])))
-
-    return D
-
-def read_g500_file():
-    G = sparse.load_npz("text/test_csr_matrix_000.npz")
-    return G
 
 def sssp_simple_serial(D,root):
     # bui prog challenges Dijkstra code
@@ -171,15 +103,15 @@ def main():
     '''
     # OR
 
-    #G = read_g500_file()
-    #n = len(G.toarray()[0])
-    #D = CSRtoDict(G)
+    G = convert.read_g500_file()
+    n = len(G.toarray()[0])
+    #D = convert.CSRtoDict(G)
     #root = list(D.keys())[0]
     #visited = sssp_simple_serial(D, root)
 
     print(end='\n\n')
     #'''
-    G = read_g500_file()
+    G = convert.read_g500_file()
 
     # Parallel: search keys
 
@@ -204,8 +136,8 @@ def main():
 
     #'''
     # read_g500_file [g500 graph format]
-    reg_matrix = CSRtoMat(G, n)
-    adjList = matTolist(reg_matrix, n)
+    reg_matrix = convert.CSRtoMat(G, n)
+    adjList = convert.matTolist(reg_matrix, n)
     '''
     for k,v in adjList.items():
         print(f'{k}:{v}')

@@ -7,6 +7,7 @@ from scipy import sparse
 import csv
 from contextlib import redirect_stdout
 
+import convert_graph_formats as convert
 import edgelist_g500 as edgeg500
 import graph_construct as multig500
 import bfs.bfs_serial as bfs
@@ -27,58 +28,13 @@ SIZEBFS48TI = 0.013
 
 # random seed if you want one
 
-def read_file():
-    with open('text/edgelist_test_003.txt') as f:
-         ls = f.read()
-
-    startVerts, endVerts, weights = ls.splitlines()
-
-    startVerts = map(float, startVerts.split(" ")[:-1])
-    endVerts = map(float, endVerts.split(" ")[:-1])
-    weights = map(float, weights.split(" ")[:-1])
-
-    edgelist = [startVerts,endVerts,weights]
-
-    return edgelist
-
-def CSRtoDict(csr):
-    csr = csr.toarray()
-    D = defaultdict(list)
-
-    for i, row in enumerate(csr):
-        for j, num in enumerate(row):
-            if num:
-                D[i].append((j, float(csr[i][j]))) #
-
-    fields = ['node1', 'node2', 'weight']
-    filename = 'csv/graph_generation_001.csv'
-
-    with open(filename, 'w') as csvfile:
-        # creating a csv dict writer object
-        writer = csv.writer(csvfile)
-
-        # writing headers (field names)
-        writer.writerow(fields)
-
-        # write rows - node1, node2, weight
-        for k, v in D.items():
-            for x in v:
-                writer.writerow([k, x[0], x[1]])
-
-    return D
-
 def main():
     NBFS = 16 # number of BFS searches to do
 
-    #### Generate Edgelist ####
+    #### Generate Edgelist & CSV ####
     edgeg500.kronecker_generator(SCALE_TEENY, EDGEF_TEENY)
 
-    edgelist = read_file() # edgelist = [[list of start verts][list of corresponding end verts][weights]]
-    
-    '''for x in edgelist:
-        for k in x:
-            print(k, end=' ')
-        print(end='\n\n') '''
+    edgelist = convert.read_file() # edgelist = [[list of start verts][list of corresponding end verts][weights]]
 
     #### Construct Graph  & put into CSV file ####
     edgelist[0] = list(map(int, edgelist[0])) # make start and end verts ints

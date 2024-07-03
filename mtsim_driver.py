@@ -4,7 +4,9 @@ import random as rand
 from collections import defaultdict
 import numpy as np
 from scipy import sparse
+import csv
 
+import convert_graph_formats as convert
 import edgelist_g500 as edgeg500
 import graph_construct as multig500
 import bfs.bfs_parallel as bfs
@@ -25,20 +27,6 @@ SIZEBFS64TI = 0.017
 SIZEBFS48TI = 0.013
 
 # random seed if you want one
-
-def read_file():
-    with open('text/edgelist_test_003.txt') as f:
-         ls = f.read()
-
-    startVerts, endVerts, weights = ls.splitlines()
-
-    startVerts = map(float, startVerts.split(" ")[:-1])
-    endVerts = map(float, endVerts.split(" ")[:-1])
-    weights = map(float, weights.split(" ")[:-1])
-
-    edgelist = [startVerts,endVerts,weights]
-
-    return edgelist
 
 def drive_bfs(args):
     # bfs(G, root)
@@ -79,7 +67,7 @@ def main():
     edgeg500.kronecker_generator(SCALE_TEENY, EDGEF_TEENY)
     print('Edgelist generated')
 
-    edgelist = read_file() # edgelist = [[list of start verts][list of corresponding end verts][weights]]
+    edgelist = convert.read_file() # edgelist = [[list of start verts][list of corresponding end verts][weights]]
     
     # print edgelist
     '''for x in edgelist:

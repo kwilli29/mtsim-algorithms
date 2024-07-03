@@ -6,64 +6,12 @@ from collections import defaultdict
 import numpy as np
 from scipy import sparse
 
+import convert_graph_formats as convert
+
 ## This is a serial Breadth First Search Algorithm that can take in a few different types of graphs formats ##
 ## For reference mostly ##
 
 ## Only need to worry about the bfs_g500_serial function ##
-
-def read_kfile():
-    with open('../text/output.txt') as f:
-         ls = f.read()
-
-    n, numEdges, adjMatrix = ls.splitlines()
-
-    n = int(n)
-    numEdges = int(numEdges)
-
-    adjMatrix = map(int, adjMatrix.split(" "))
-    # adjMatrix = 1D array here, adjMat[k] = (i*n)+j = {i: [j, ...], ...}
-
-    return n, numEdges, adjMatrix
-
-def matToCSR(matrix, n):
-    
-    matrix = list(matrix)
-    matrix = np.reshape(matrix, (n,n))
-    csr_mat = sparse.csr_matrix(matrix)
-
-    return csr_mat
-
-def matTolist(matrix, n):
-
-    matrix = list(matrix)
-
-    adjList = defaultdict(list)
-
-    for index, k in enumerate(matrix):
-        
-          i = index//n
-          j = index%n
-
-          if k != 0:
-            adjList[i].append(j) ######### 'malloc'?
-
-    return adjList
-
-def CSRtoDict(csr):
-    csr = csr.toarray()
-    D = defaultdict(list)
-
-    for i, row in enumerate(csr):
-        for j, num in enumerate(row):
-            if num:
-                D[i].append(j)
-
-    return D
-
-def read_g500_file():
-
-    G = sparse.load_npz("../text/test_csr_matrix_000.npz")
-    return G
 
 def bfs_simple_serial(adjList, root):
 
@@ -124,11 +72,11 @@ def bfs_g500_serial(F, root):
 def main():
 
     '''
-    n, numEdges, adjMatrix = read_kfile()
-    # adjList = matTolist(adjMatrix, n)
+    n, numEdges, adjMatrix = convert.read_kfile()
+    # adjList = convert.matTolist(adjMatrix, n)
     # print(adjList)
 
-    F = matToCSR(adjMatrix, n)
+    F = convert.matToCSR(adjMatrix, n)
     root = 1 # ?
     # serial_visited = bfs_simple_serial(adjList, root)
     serial_parent = bfs_g500_serial(F, root)
@@ -138,10 +86,9 @@ def main():
     print(f'Visited: {serial_visited}\nLength:{len(serial_visited)}')
     print()
     '''
-    
     #'''
-
-    G = read_g500_file()
+    
+    G = convert.read_g500_file()
     
     # Parallel: search keys for a handful of random starting points to concurrently run bfs from
 
