@@ -56,8 +56,24 @@ def drive_bfs(args):
 
     return
 
+def drive_sssp(args):
+    # sssp(G, root)
+    # args = {'arg1': <G_csr>, 'arg2': [root1, root2 ...]}
+
+    #mt_for_all(bfs.bfs_g500_serial, args, i, args['arg2'])# ?
+
+    for x in args['arg2']: # since no for_all
+
+        mtsim.mt_spawn(sssp.sssp_g500_migrate, {'arg1': args['arg1'], 'arg2': x})
+    
+    # where do returns go?
+
+    mtsim.mt_die()
+
+    return
+
 def main():
-    NBFS = 16 # number of BFS searches to do 
+    NBFS = 16 # number of BFS/SSSP searches to do 
 
     #### Generate Edgelist ####
     edgeg500.kronecker_generator(SCALE_TEENY, EDGEF_TEENY)
@@ -139,9 +155,8 @@ def main():
 
     mtsim.mt_run(drive_bfs, args, 0, 0, 16)
 
+    mtsim.mt_run(drive_sssp, args, 0, 0, 16)
 
-    # haven't fully implemented sssp yet
-    #parent3, d = sssp.sssp_g500_migrate(G, search_key[k]) # or level1_rand_nodes
 
     # METRICS: SCALE, NBFS, k1_time, k2_time, k2_nedge, k3_time, k3_nedge
     with open('text/driver_graph_002.txt', 'w') as  d:

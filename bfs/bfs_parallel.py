@@ -17,8 +17,8 @@ def bfs_g500_migrate(args): #(F, root):
 
     #G = F.toarray() # unpack into a 2d array  -- IGNORE FOR MTSIM
 
-    # N = array of sizes of all the lists in graph I think?
-    N = len(G[0]) # N = # of verts / row of matrix I think
+    # N = array of sizes of all the lists in graph
+    N = len(G[0]) # N = # of verts / row of matrix
 
     parent = [-1]*N 
     #***************#
@@ -58,7 +58,7 @@ def bfs_g500_migrate(args): #(F, root):
                 mtsim.mt_array_write(I, cnt, j) 
                 cnt+=1
 
-        next = [] #  'malloc'?
+        next = [] #  'malloc'
         #***************#
         #mtsim.mt_array_malloc(next, mtsim.mt_single, [mtsim.current_node])
         mtsim.mt_array_malloc(next, mtsim.mt_block_cyclic, [0, 2, 16])
@@ -78,7 +78,7 @@ def bfs_g500_migrate(args): #(F, root):
                 #***************#
                 mtsim.mt_array_write(parent, i, v)
 
-                next.append(i)  # have a list of next vertices?
+                next.append(i)  # have a list of next vertices
                 #***************#
                 mtsim.mt_array_write(next, cnt, i)
                 cnt+=1
@@ -107,4 +107,4 @@ def bfs_g500_migrate(args): #(F, root):
     mtsim.mt_die()
     return parent
 
-    ## TODO: Think of better way to keep track of info #
+    ## TODO: Think of better way to keep track of info ##
