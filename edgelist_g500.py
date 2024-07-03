@@ -1,8 +1,8 @@
-import sys
 import networkx as nx
 #import matplotlib.pyplot as plt
 import random as rand
 import numpy as np
+import csv
 
 # APROX. CUSTOM TEENY #
 SCALE_TEENY = 10
@@ -105,12 +105,24 @@ def main():
     # edgelist = kronecker_generator(SCALE_TINY, EDGEF_TINY)
     edgelist = kronecker_generator(SCALE_TEENY, EDGEF_TEENY)
     
-    for x in edgelist:
-        for k in x:
-            print(k, end=' ')
-        print()
+    fields = ['node1', 'node2', 'weight'] # write to csv file
+    filename = 'csv/edgelist_000.csv'
 
-    # print(edgelist)
+    with open(filename, 'w') as csvfile:
+        # creating a csv dict writer object
+        writer = csv.writer(csvfile)
+
+        # writing headers (field names)
+        writer.writerow(fields)
+
+        # write rows - node1, node2, weight
+        for x, n in enumerate(edgelist[0]):
+            writer.writerow([int(edgelist[0][x]), int(edgelist[1][x]), edgelist[2][x]])
+
+    #for x in edgelist:
+    #    for k in x:
+    #        print(k, end=' ')
+    #    print()
 
 if __name__ == '__main__':
     main()

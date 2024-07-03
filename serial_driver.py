@@ -4,10 +4,11 @@ import random as rand
 from collections import defaultdict
 import numpy as np
 from scipy import sparse
-import sys
+import csv
+from contextlib import redirect_stdout
 
 import edgelist_g500 as edgeg500
-import multidigraph as multig500
+import graph_construct as multig500
 import bfs.bfs_serial as bfs
 import sssp.sssp_serial as sssp
 import validate
@@ -40,6 +41,32 @@ def read_file():
 
     return edgelist
 
+def CSRtoDict(csr):
+    csr = csr.toarray()
+    D = defaultdict(list)
+
+    for i, row in enumerate(csr):
+        for j, num in enumerate(row):
+            if num:
+                D[i].append((j, float(csr[i][j]))) ######### 'malloc'?
+
+    fields = ['node1', 'node2', 'weight']
+    filename = 'csv/graph_generation_001.csv'
+
+    with open(filename, 'w') as csvfile:
+        # creating a csv dict writer object
+        writer = csv.writer(csvfile)
+
+        # writing headers (field names)
+        writer.writerow(fields)
+
+        # write rows - node1, node2, weight
+        for k, v in D.items():
+            for x in v:
+                writer.writerow([k, x[0], x[1]])
+
+    return D
+
 def main():
     NBFS = 16 # number of BFS searches to do
 
@@ -60,6 +87,8 @@ def main():
     # k1 time start
     G = multig500.kernel1_g500(edgelist) 
     # k1 time end
+
+    DictG = CSRtoDict(G) # write graph to CSV
 
     #### Search Keys BFS #### Graph500
     N = len(G.toarray()[0])
@@ -113,7 +142,8 @@ def main():
     # METRICS: SCALE, NBFS, k1_time, k2_time, k2_nedge, k3_time, k3_nedge
 
     with open('text/driver_graph_000.txt', 'w') as f:
-        print(G, file=f)
+        with redirect_stdout(f):
+            print(G)
 
     return
 

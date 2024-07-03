@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import random as rand
 import numpy as np
 from scipy import sparse
+from collections import defaultdict
+import csv
 
 def read_file():
     with open('text/edgelist_test_002.txt') as f:
@@ -18,7 +20,34 @@ def read_file():
 
     return edgelist
 
-def digraphGen(n, G): # not Tree
+def CSRtoDict(csr):
+
+    csr = csr.toarray()
+    D = defaultdict(list)
+
+    for i, row in enumerate(csr):
+        for j, num in enumerate(row):
+            if num:
+                D[i].append((j, float(csr[i][j]))) 
+
+    fields = ['node1', 'node2', 'weight']
+    filename = 'csv/graph_generation_000.csv'
+
+    with open(filename, 'w') as csvfile:
+        # creating a csv dict writer object
+        writer = csv.writer(csvfile)
+
+        # writing headers (field names)
+        writer.writerow(fields)
+
+        # write rows - node1, node2, weight
+        for k, v in D.items():
+            for x in v:
+                writer.writerow([k, x[0], x[1]])
+
+    return D
+
+def random_graph_gen(n, G): # not Tree
 
     # n == rand number of nodes (by hundreds for now)
 
@@ -64,6 +93,7 @@ def digraphGen(n, G): # not Tree
     #plt.show()
 
     return adjMatrix
+
 def print_dG(n, adjMatrix):
     #print('[', end='')
     for cnt, i in enumerate(adjMatrix):
@@ -89,47 +119,40 @@ def kernel1_g500(edgelist): # Tree?
 
     # Create matrix & make sure it's square
 
-    F = sparse.csr_matrix((np.ones((len(edgelist[0]),), dtype=int), (edgelist[0], edgelist[1])), shape=(N,N), dtype=int)
-
+    F = sparse.csr_matrix((np.ones((len(edgelist[0]),), dtype=int), (edgelist[0], (edgelist[1]))), shape=(N,N), dtype=float)
+    FW = sparse.csr_matrix((list(edgelist[2]), (edgelist[0], (edgelist[1]))), shape=(N,N), dtype=float)
 
     # Symmetrize to model an undirected graph
-    F = F + F.transpose() # get the undirected graph?
-    H = F.copy().tocsr()
+    FW = FW + FW.transpose() # get the undirected graph?
+    H = FW.copy().tocsr()
     G = H
     
-    G[G != 0] = 1         # turn vertex matrix values into 1s so graph is undirected?
+    # G[G != 0] = 1         # turn vertex matrix values into 1s so graph is undirected?
 
     return G
 
 
 def main():
-    # Generation Method 1 -- IGNORE
-    # plt.clf()
-    #G = nx.DiGraph()
-    #node = rand.randint(1,9)
-    #n = node * 100
-    #adjMatrix = digraphGen(n, G)
-    #print_dG(n, adjMatrix)
 
-    ## Graph 500 Generator Method 2 ##
+    ## Graph 500 Generator Method 1 ##
     edgelist = read_file()
 
     edgelist[0] = list(map(int, edgelist[0])) # make start and end verts ints
     edgelist[1] = list(map(int, edgelist[1]))
-
-    '''
-    for x in edgelist:
-        for k in x:
-            print(k, end=" ")
-        print(end="\n\n") 
-    #'''
     
     G = kernel1_g500(edgelist)
-    #for x in G.toarray(): # 2d array of 1s for edges and 0s
-    #    print(x, end=' ')
-    # print(G)
 
     sparse.save_npz("text/test_csr_matrix_000.npz", G)
+
+    DictG = CSRtoDict(G) # generates CSV file of graph
+
+    # Generation Method 2 -- IGNORE
+    # plt.clf()
+    #G = nx.DiGraph()
+    #node = rand.randint(1,9)
+    #n = node * 100
+    #adjMatrix = random_graph_gen(n, G)
+    #print_dG(n, adjMatrix)
 
 
 if __name__ == '__main__':

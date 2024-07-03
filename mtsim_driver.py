@@ -6,7 +6,7 @@ import numpy as np
 from scipy import sparse
 
 import edgelist_g500 as edgeg500
-import multidigraph as multig500
+import graph_construct as multig500
 import bfs.bfs_parallel as bfs
 import sssp.sssp_parallel as sssp
 

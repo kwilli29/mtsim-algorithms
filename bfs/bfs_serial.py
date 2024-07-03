@@ -12,7 +12,7 @@ from scipy import sparse
 ## Only need to worry about the bfs_g500_serial function ##
 
 def read_kfile():
-    with open('text/output.txt') as f:
+    with open('../text/output.txt') as f:
          ls = f.read()
 
     n, numEdges, adjMatrix = ls.splitlines()
@@ -56,12 +56,13 @@ def CSRtoDict(csr):
     for i, row in enumerate(csr):
         for j, num in enumerate(row):
             if num:
-                D[i].append(j) ######### 'malloc'?
+                D[i].append(j)
 
     return D
 
 def read_g500_file():
-    G = sparse.load_npz("text/test_csr_matrix_000.npz")
+
+    G = sparse.load_npz("../text/test_csr_matrix_000.npz")
     return G
 
 def bfs_simple_serial(adjList, root):
@@ -139,8 +140,9 @@ def main():
     '''
     
     #'''
-    G = read_g500_file()
 
+    G = read_g500_file()
+    
     # Parallel: search keys for a handful of random starting points to concurrently run bfs from
 
     # Kernel 2

@@ -60,7 +60,7 @@ def CSRtoDict(csr):
     return D
 
 def read_g500_file():
-    G = sparse.load_npz("text/test_csr_matrix_000.npz")
+    G = sparse.load_npz("test_csr_matrix_000.npz")
     return G
 
 def sssp_simple_serial(D,root):
@@ -80,7 +80,7 @@ def sssp_simple_serial(D,root):
 
     ## reconstruct path ##
     for t in list(D.keys())[1:]:
-        path = [] ######### 'malloc'?
+        path = []
         curr = t
         while curr != root:
             path.append(curr)
