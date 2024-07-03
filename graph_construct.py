@@ -123,11 +123,13 @@ def kernel1_g500(edgelist): # Tree?
     FW = sparse.csr_matrix((list(edgelist[2]), (edgelist[0], (edgelist[1]))), shape=(N,N), dtype=float)
 
     # Symmetrize to model an undirected graph
-    FW = FW + FW.transpose() # get the undirected graph?
+    FW = FW + FW.transpose()
     H = FW.copy().tocsr()
     G = H
     
     # G[G != 0] = 1         # turn vertex matrix values into 1s so graph is undirected?
+
+    DictG = CSRtoDict(G) # generates CSV file of graph
 
     return G
 
@@ -143,8 +145,6 @@ def main():
     G = kernel1_g500(edgelist)
 
     sparse.save_npz("text/test_csr_matrix_000.npz", G)
-
-    DictG = CSRtoDict(G) # generates CSV file of graph
 
     # Generation Method 2 -- IGNORE
     # plt.clf()

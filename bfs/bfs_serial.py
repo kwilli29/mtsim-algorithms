@@ -74,11 +74,11 @@ def bfs_simple_serial(adjList, root):
         node = queue.pop(0)
 
         if node not in visited:
-            visited.append(node) ######### 'malloc'?
+            visited.append(node) 
 
             if adjList[node]:
                 for neighbor in adjList[node]:
-                    queue.append(neighbor) ######### 'malloc'?
+                    queue.append(neighbor) 
 
     return visited 
      

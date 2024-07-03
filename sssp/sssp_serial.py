@@ -7,6 +7,11 @@ import heapq
 import numpy as np
 from scipy import sparse
 
+import edgelist_g500 as edgeg500
+import graph_construct as multig500
+SCALE_TEENY = 10
+EDGEF_TEENY = 16
+
 def read_kfile():
     with open('text/output.txt') as f:
          ls = f.read()
@@ -19,6 +24,19 @@ def read_kfile():
     adjMatrix = map(int, adjMatrix.split(" "))
 
     return n, numEdges, adjMatrix
+def read_file():
+    with open('text/edgelist_test_003.txt') as f:
+         ls = f.read()
+
+    startVerts, endVerts, weights = ls.splitlines()
+
+    startVerts = map(float, startVerts.split(" ")[:-1])
+    endVerts = map(float, endVerts.split(" ")[:-1])
+    weights = map(float, weights.split(" ")[:-1])
+
+    edgelist = [startVerts,endVerts,weights]
+
+    return edgelist
 
 def matToCSR(matrix, n):
     
@@ -55,34 +73,34 @@ def CSRtoDict(csr):
     for i, row in enumerate(csr):
         for j, num in enumerate(row):
             if num:
-                D[i].append(j) ######### 'malloc'?
+                D[i].append((j, float(csr[i][j])))
 
     return D
 
 def read_g500_file():
-    G = sparse.load_npz("test_csr_matrix_000.npz")
+    G = sparse.load_npz("text/test_csr_matrix_000.npz")
     return G
 
 def sssp_simple_serial(D,root):
     # bui prog challenges Dijkstra code
     frontier = []
     visited = {}
-    heapq.heappush(frontier, (root,root)) # (0, root, root))
+    heapq.heappush(frontier, (0, root,root)) # (0, root, root))
     while frontier:
-        source,target = heapq.heappop(frontier) # weight,source,target = heapq.heappop(frontier)
+        weight,source,target = heapq.heappop(frontier)
 
         if target in visited:
             continue
         visited[target] = source
 
         for neighbor in D[target]:#, cost in D[target].items():
-            heapq.heappush(frontier, (target,neighbor)) #(weight+cost, target,neighbor))
+            heapq.heappush(frontier, (weight+neighbor[1],target,neighbor[0])) #(weight+cost, target,neighbor))
 
     ## reconstruct path ##
     for t in list(D.keys())[1:]:
         path = []
         curr = t
-        while curr != root:
+        while curr != root and curr in visited.keys():
             path.append(curr)
             curr = visited[curr]
         path.append(root)
@@ -108,9 +126,6 @@ def sssp_g500_serial(F, root):
     Q = range(N)
 
     while len(Q) > 0:
-        #print('Q: ', end='')
-        #for x in Q: print(x, end=' ')
-        #print()
 
         mini_dist = np.inf
         for i,k in enumerate(Q):
@@ -136,15 +151,15 @@ def sssp_g500_serial(F, root):
      
     for x in range(N):
         if parent[x] == -1: continue
-        #print(f'{root} -> {x} = [{root}', end='')
+        print(f'{root} -> {x} = [{root}', end='')
         cnt = d[x]-1
         k = x
         while cnt > 0 and cnt != np.inf:
-            #print(f', {parent[k]}', end='')
+            print(f', {parent[k]}', end='')
             k = parent[k]
             cnt = cnt - 1
 
-        #print(f']')
+        print(f']')
 
     return (parent, d)
 
@@ -155,16 +170,16 @@ def main():
     #G = matToCSR(adjMatrix, n)
     '''
     # OR
-    G = read_g500_file()
-    n = len(G.toarray()[0])
-    D = CSRtoDict(G)
-    root = list(D.keys())[0] #? or search key??
-    visited = sssp_simple_serial(D, root)
+
+    #G = read_g500_file()
+    #n = len(G.toarray()[0])
+    #D = CSRtoDict(G)
+    #root = list(D.keys())[0]
+    #visited = sssp_simple_serial(D, root)
 
     print(end='\n\n')
-
     #'''
-    #G = read_g500_file()
+    G = read_g500_file()
 
     # Parallel: search keys
 

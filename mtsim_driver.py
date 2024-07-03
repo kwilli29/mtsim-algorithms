@@ -87,7 +87,7 @@ def main():
             print(k, end=' ')
         print(end='\n\n') '''
 
-    #### Construct Graph ####
+    #### Construct Graph  & put into CSV File ####
     edgelist[0] = list(map(int, edgelist[0])) # make start and end verts ints
     edgelist[1] = list(map(int, edgelist[1])) # keep generated weights floats
 

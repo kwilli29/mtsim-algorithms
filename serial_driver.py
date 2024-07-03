@@ -48,7 +48,7 @@ def CSRtoDict(csr):
     for i, row in enumerate(csr):
         for j, num in enumerate(row):
             if num:
-                D[i].append((j, float(csr[i][j]))) ######### 'malloc'?
+                D[i].append((j, float(csr[i][j]))) #
 
     fields = ['node1', 'node2', 'weight']
     filename = 'csv/graph_generation_001.csv'
@@ -80,15 +80,13 @@ def main():
             print(k, end=' ')
         print(end='\n\n') '''
 
-    #### Construct Graph ####
+    #### Construct Graph  & put into CSV file ####
     edgelist[0] = list(map(int, edgelist[0])) # make start and end verts ints
     edgelist[1] = list(map(int, edgelist[1]))
 
     # k1 time start
     G = multig500.kernel1_g500(edgelist) 
     # k1 time end
-
-    DictG = CSRtoDict(G) # write graph to CSV
 
     #### Search Keys BFS #### Graph500
     N = len(G.toarray()[0])
