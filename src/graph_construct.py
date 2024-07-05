@@ -67,7 +67,7 @@ def print_dG(n, adjMatrix):
     #print(']')
     return
     
-def kernel1_g500(edgelist): # Tree?
+def kernel1_g500(edgelist):
     
     # Remove self edges
     for k, x in enumerate(edgelist):

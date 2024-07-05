@@ -36,7 +36,10 @@ def sssp_g500_migrate(args): #(F, root):
     #***************#
     mtsim.mt_array_write(parent, root, root)
 
-    Q = range(N)    #### allocate array
+    vist ={}           # don't need to allocate -- not involved in algorithm
+    vist[root] = root  # dictionary solely for path tracing and verification
+
+    Q = range(N)       #### allocate array
     #***************#
     mtsim.mt_array_malloc(Q, mtsim.mt_block_cyclic, [0, 2, 16])
     cnt=0
@@ -108,23 +111,24 @@ def sssp_g500_migrate(args): #(F, root):
                 #***************# # write
                 mtsim.mt_array_write(d, u, dist_tmp) # write 
 
+                vist[int(u)] = int(v) # path verification
+
                 parent[u] = v
                 #***************# # write
                 mtsim.mt_array_write(parent, u, v) # write 
 
     # reconstruct path
-     
-    for x in range(N):
-        if parent[x] == -1: continue
-        print(f'{root} -> {x} = [{root}', end='')
-        cnt = d[x]-1
-        k = x
-        while cnt > 0 and cnt != np.inf:
-            print(f', {parent[k]}', end='')
-            k = parent[k]
-            cnt = cnt - 1
+    for t in range(N):
+        path = []
+        curr = t
+        while curr != root and curr in vist.keys():
+            path.append(curr)
+            curr = vist[curr]
+        path.append(root)
 
-        print(f']')
+        rev_path = np.array(path)[::-1].tolist()
+        print(f'{root} -> {t} = {rev_path}')
+    print()
 
     mtsim.mt_die()
     return (parent, d)

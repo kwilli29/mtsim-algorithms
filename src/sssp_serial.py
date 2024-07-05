@@ -84,17 +84,18 @@ def sssp_g500_serial(F, root):
     
     # reconstruct path
     print(vist)
-    '''for x in range(N):
-        if parent[x] == -1: continue
-        print(f'{k}: {root} -> {x} = [{root}', end='')
-        cnt = d[x]-1
-        k = x
-        while cnt > 0 and cnt != np.inf:
-            print(f', {parent[k]}', end='')
-            k = parent[k]
-            cnt = cnt - 1
+    
+    for t in range(N):
+        path = []
+        curr = t
+        while curr != root and curr in vist.keys():
+            path.append(curr)
+            curr = vist[curr]
+        path.append(root)
 
-        print(f']') '''
+        rev_path = np.array(path)[::-1].tolist()
+        print(f'{root} -> {t} = {rev_path}')
+    print()
 
     return (parent, d)
 
@@ -106,7 +107,7 @@ def simple():
     # OR
 
     #G = convert.read_g500_file()
-    G = convert.read_csv_file(5, 'csv/simple_graph_000.csv')
+    G = convert.read_csv_file(7, 'src/csv/simple_graph_001.csv')
     #n = len(G.toarray()[0])
     D = convert.CSRtoDict(G)
     #convert.dictToCSV(D)
@@ -119,23 +120,18 @@ def simple():
 
 def main():
 
-    simple()
+    # Simple Algorithm
+    # simple()
 
+    # G500
     #G = convert.read_g500_file()
-    G = convert.read_csv_file(5, 'csv/simple_graph_000.csv')
+    G = convert.read_csv_file(7, 'src/csv/simple_graph_001.csv')
     n = len(G.toarray()[0])
-    # Parallel: search keys
 
     # Kernel 3
     root = 0 # serial bfs
     parent, d = sssp_g500_serial(G, root)
 
-    print('parent:', end=' ')
-    for x in parent: print(x, end=' ')
-    print('\nd:', end=' ')
-    for x in d: print(x, end=' ')
-    print()
-    #'''
 
     ####### Print Dictionary #######
     '''
@@ -155,8 +151,7 @@ def main():
         print(f'{k}:{v}')
     #'''
 
-    print('\nend')
-
+    print('end')
 
     return
 
