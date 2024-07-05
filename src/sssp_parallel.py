@@ -127,7 +127,7 @@ def sssp_g500_migrate(args): #(F, root):
         path.append(root)
 
         rev_path = np.array(path)[::-1].tolist()
-        print(f'{root} -> {t} = {rev_path}')
+        #print(f'{root} -> {t} = {rev_path}')
     print()
 
     mtsim.mt_die()

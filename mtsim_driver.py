@@ -143,7 +143,6 @@ def main():
 
     mtsim.mt_run(drive_sssp, args, 0, 0, 16)
 
-
     # METRICS: SCALE, NBFS, k1_time, k2_time, k2_nedge, k3_time, k3_nedge
     with open('text/driver_graph_002.txt', 'w') as  d:
         print(G, file=d)
