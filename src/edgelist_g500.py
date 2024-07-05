@@ -92,7 +92,7 @@ def kronecker_generator(SCALE, edgefactor):
     # Adjust to zero-based labels
     # print('No need to zero-based labels in Python')
 
-    with open('./text/edgelist_test_003.txt', 'w') as f:
+    with open('../text/edgelist_test_003.txt', 'w') as f:
         for x in return_array:
             for k in x:
                 print(k, end=' ', file=f)

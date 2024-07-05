@@ -6,11 +6,11 @@ import numpy as np
 from scipy import sparse
 import csv
 
-import convert_graph_formats as convert
-import edgelist_g500 as edgeg500
-import graph_construct as multig500
-import bfs.bfs_parallel as bfs
-import sssp.sssp_parallel as sssp
+import src.convert_graph_formats as convert
+import src.edgelist_g500 as edgeg500
+import src.graph_construct as multig500
+import src.bfs_parallel as bfs
+import src.sssp_parallel as sssp
 
 import mtsim
 

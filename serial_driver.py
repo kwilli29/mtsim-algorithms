@@ -7,11 +7,11 @@ from scipy import sparse
 import csv
 from contextlib import redirect_stdout
 
-import convert_graph_formats as convert
-import edgelist_g500 as edgeg500
-import graph_construct as multig500
-import bfs.bfs_serial as bfs
-import sssp.sssp_serial as sssp
+import src.convert_graph_formats as convert
+import src.edgelist_g500 as edgeg500
+import src.graph_construct as multig500
+import src.bfs_serial as bfs
+import src.sssp_serial as sssp
 import validate
 
 # APROX. CUSTOM TEENY #

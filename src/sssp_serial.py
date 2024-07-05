@@ -8,8 +8,7 @@ import numpy as np
 from scipy import sparse
 
 import convert_graph_formats as convert
-import edgelist_g500 as edgeg500
-import graph_construct as multig500
+
 SCALE_TEENY = 10
 EDGEF_TEENY = 16
 
@@ -55,6 +54,9 @@ def sssp_g500_serial(F, root):
     parent = [-1]*N
     parent[root] = root
 
+    vist ={}
+    vist[root] = root
+
     Q = range(N)
 
     while len(Q) > 0:
@@ -66,7 +68,7 @@ def sssp_g500_serial(F, root):
                 mini_dist = d[k]
 
         v = Q[mini_ind]
-
+        
         Q = np.setdiff1d(Q, [v])        
 
         I = np.nonzero(G[:][v])[0]
@@ -77,13 +79,14 @@ def sssp_g500_serial(F, root):
             dist_tmp = d[v] + V[k]
             if dist_tmp < d[u]:
                 d[u] = dist_tmp
+                vist[int(u)] = int(v)
                 parent[u] = v
-
+    
     # reconstruct path
-     
-    for x in range(N):
+    print(vist)
+    '''for x in range(N):
         if parent[x] == -1: continue
-        print(f'{root} -> {x} = [{root}', end='')
+        print(f'{k}: {root} -> {x} = [{root}', end='')
         cnt = d[x]-1
         k = x
         while cnt > 0 and cnt != np.inf:
@@ -91,33 +94,42 @@ def sssp_g500_serial(F, root):
             k = parent[k]
             cnt = cnt - 1
 
-        print(f']')
+        print(f']') '''
 
     return (parent, d)
 
-def main():
-
+def simple():
     '''
     #n, numEdges, adjMatrix = read_kfile()
     #G = matToCSR(adjMatrix, n)
     '''
     # OR
 
-    G = convert.read_g500_file()
-    n = len(G.toarray()[0])
-    #D = convert.CSRtoDict(G)
-    #root = list(D.keys())[0]
-    #visited = sssp_simple_serial(D, root)
+    #G = convert.read_g500_file()
+    G = convert.read_csv_file(5, 'csv/simple_graph_000.csv')
+    #n = len(G.toarray()[0])
+    D = convert.CSRtoDict(G)
+    #convert.dictToCSV(D)
+    root = list(D.keys())[0]
+    visited = sssp_simple_serial(D, root)
 
+    print(f'Visited#1: {visited}')
     print(end='\n\n')
     #'''
-    G = convert.read_g500_file()
 
+def main():
+
+    simple()
+
+    #G = convert.read_g500_file()
+    G = convert.read_csv_file(5, 'csv/simple_graph_000.csv')
+    n = len(G.toarray()[0])
     # Parallel: search keys
 
     # Kernel 3
     root = 0 # serial bfs
     parent, d = sssp_g500_serial(G, root)
+
     print('parent:', end=' ')
     for x in parent: print(x, end=' ')
     print('\nd:', end=' ')
