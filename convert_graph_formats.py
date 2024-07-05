@@ -90,18 +90,49 @@ def CSRtoDict(csr):
 
     return D
 
+def dictToCSV(D):
+    fields = ['node1', 'node2', 'weight']
+    filename = 'csv/graph_generation_000.csv'
+
+    with open(filename, 'w') as csvfile:
+        # creating a csv dict writer object
+        writer = csv.writer(csvfile)
+
+        # writing headers (field names)
+        writer.writerow(fields)
+
+        # write rows - node1, node2, weight
+        for k, v in D.items():
+            for x in v:
+                writer.writerow([k, x[0], x[1]])
+
+def edgelistToCSV(edgelist):
+    fields = ['node1', 'node2', 'weight'] # write to csv file
+    filename = 'csv/edgelist_000.csv'
+
+    with open(filename, 'w') as csvfile:
+        # creating a csv dict writer object
+        writer = csv.writer(csvfile)
+
+        # writing headers (field names)
+        writer.writerow(fields)
+
+        # write rows - node1, node2, weight
+        for x, n in enumerate(edgelist[0]):
+            writer.writerow([int(edgelist[0][x]), int(edgelist[1][x]), edgelist[2][x]])
+
 def read_g500_file(filename):
     G = sparse.load_npz(filename)
     return G
 
-def read_csv_file(N):
+def read_csv_file(N, filename):
     # read in csv file - take in number of vertices
     # sparse matrix = [i][j] = weight
     sep=','
     i = []
     j = []
     w = []
-    with open('csv/graph_generation_000.csv', mode ='r')as file:
+    with open(filename, mode ='r')as file:
         csvFile = csv.reader(file)
         headers = next(csvFile, None)
         for data in csvFile:

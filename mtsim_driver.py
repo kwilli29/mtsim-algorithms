@@ -63,7 +63,7 @@ def drive_sssp(args):
 def main():
     NBFS = 16 # number of BFS/SSSP searches to do 
 
-    #### Generate Edgelist ####
+    #### Generate Edgelist & put into CSV File ####
     edgeg500.kronecker_generator(SCALE_TEENY, EDGEF_TEENY)
     print('Edgelist generated')
 
@@ -105,7 +105,6 @@ def main():
 
 
     # Level 1 Nodes = search_key
-
     # OR choose a root and put children in level1_array
     # This commented out chunk is a second potential way tp get start values for a BFS
     '''rand_root = rand.randint(0, N-1)
@@ -135,11 +134,10 @@ def main():
 
     print('Arranged chosen starting nodes')
 
-    args = {'arg1': G, 'arg2': search_key}
-    # OR
-    #args = {'arg1': G, 'arg2': level1_rand_nodes} # if second method used
+    ######## Run Algs ########
 
-    # allocate NBFS search keys - 1/node
+    args = {'arg1': G, 'arg2': search_key}
+    # OR # args = {'arg1': G, 'arg2': level1_rand_nodes} # if second method used
 
     mtsim.mt_run(drive_bfs, args, 0, 0, 16)
 

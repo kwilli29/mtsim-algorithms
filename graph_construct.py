@@ -90,7 +90,8 @@ def kernel1_g500(edgelist): # Tree?
     
     # G[G != 0] = 1         # turn vertex matrix values into 1s so graph is undirected?
 
-    DictG = CSRtoDict(G) # generates CSV file of graph
+    DictG = convert.CSRtoDict(G) # generates CSV file of graph
+    convert.dictToCSV(DictG)
 
     return G
 
@@ -107,7 +108,7 @@ def main():
     sparse.save_npz("text/test_csr_matrix_000.npz", G)
 
     # Generation Method 2 -- IGNORE
-    # plt.clf()
+    #plt.clf()
     #G = nx.DiGraph()
     #node = rand.randint(1,9)
     #n = node * 100
