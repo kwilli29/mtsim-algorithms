@@ -1,7 +1,7 @@
 import random as rand
 import numpy as np
 import csv
-import convert_graph_formats as convert
+import src.convert_graph_formats as convert
 
 # APROX. CUSTOM TEENY # 
 SCALE_TEENY = 10
@@ -88,7 +88,7 @@ def kronecker_generator(SCALE, edgefactor):
     # Adjust to zero-based labels
     # print('No need to zero-based labels in Python')
 
-    with open('text/edgelist_test_003.txt', 'w') as f:
+    with open('src/text/edgelist_test_003.txt', 'w') as f:
         for x in return_array:
             for k in x:
                 print(k, end=' ', file=f)

@@ -7,9 +7,6 @@ import heapq
 import numpy as np
 from scipy import sparse
 
-import edgelist_g500 as edgeg500
-import graph_construct as multig500
-
 ## FILE THAT CONVERTS GRAPHS AND MATRICES TO CSV OR DIFF. DATA STRUCTS ##
 
 def read_kfile(filename):
@@ -94,7 +91,7 @@ def CSRtoDict(csr):
 
 def dictToCSV(D):
     fields = ['node1', 'node2', 'weight']
-    filename = 'csv/graph_generation_000.csv'
+    filename = 'src/csv/graph_generation_000.csv'
 
     with open(filename, 'w') as csvfile:
         # creating a csv dict writer object

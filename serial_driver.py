@@ -97,7 +97,7 @@ def main():
     
     # METRICS: SCALE, NBFS, k1_time, k2_time, k2_nedge, k3_time, k3_nedge
 
-    with open('text/driver_graph_000.txt', 'w') as f:
+    with open('src/text/driver_graph_000.txt', 'w') as f:
         with redirect_stdout(f):
             print(G)
 

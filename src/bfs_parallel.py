@@ -51,10 +51,9 @@ def bfs_g500_migrate(args): #(F, root):
         mtsim.mt_array_malloc(I, mtsim.mt_block_cyclic, [0, 2, 16])
         cnt = 0
         for j in range(len(G)):
-            # G[j][v] READ
-            Gj = mtsim.mt_array_read(G, j)
-            Gjv = mtsim.mt_array_read(Gj, v)
-            if Gjv != 0: # if G[j][v] != 0:
+            # G[j][v] READ 
+            if G[j][v] != 0: # if G[j][v] != 0:
+                #***************#
                 mtsim.mt_array_write(I, cnt, j) 
                 cnt+=1
 

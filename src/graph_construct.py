@@ -6,7 +6,7 @@ from scipy import sparse
 from collections import defaultdict
 import csv
 
-import convert_graph_formats as convert
+import src.convert_graph_formats as convert
 
 def random_graph_gen(n, G): # random number of nodes and edges
 

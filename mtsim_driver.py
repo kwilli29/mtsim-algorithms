@@ -67,7 +67,7 @@ def main():
     edgeg500.kronecker_generator(SCALE_TEENY, EDGEF_TEENY)
     print('Edgelist generated')
 
-    edgelist = convert.read_file() # edgelist = [[list of start verts][list of corresponding end verts][weights]]
+    edgelist = convert.read_file('src/text/edgelist_test_003.txt') # edgelist = [[list of start verts][list of corresponding end verts][weights]]
     
     # print edgelist
     '''for x in edgelist:
@@ -133,7 +133,7 @@ def main():
     mtsim.mt_run(drive_sssp, args, 0, 0, 16)
 
     # METRICS: SCALE, NBFS, k1_time, k2_time, k2_nedge, k3_time, k3_nedge
-    with open('text/driver_graph_002.txt', 'w') as  d:
+    with open('src/text/driver_graph_002.txt', 'w') as  d:
         print(G, file=d)
 
     return
