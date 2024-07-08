@@ -26,15 +26,15 @@ EDGEF_TINY = 16
 SIZEBFS64TI = 0.017
 SIZEBFS48TI = 0.013
 
-# random seed if you want one
+# random seed if wanted
 
 def drive_bfs(args):
     # bfs(G, root)
     # args = {'arg1': <G_csr>, 'arg2': [root1, root2 ...]}
 
-    #mt_for_all(bfs.bfs_g500_serial, args, i, args['arg2'])# ?
+    #mt_for_all(bfs.bfs_g500_serial, args, i, args['arg2']) # ?
 
-    for x in args['arg2']: # since no for all
+    for x in args['arg2']:
 
         mtsim.mt_spawn(bfs.bfs_g500_migrate, {'arg1': args['arg1'], 'arg2': x})
     
@@ -48,9 +48,9 @@ def drive_sssp(args):
     # sssp(G, root)
     # args = {'arg1': <G_csr>, 'arg2': [root1, root2 ...]}
 
-    #mt_for_all(bfs.bfs_g500_serial, args, i, args['arg2'])# ?
+    #mt_for_all(bfs.bfs_g500_serial, args, i, args['arg2']) # ?
 
-    for x in args['arg2']: # since no for_all
+    for x in args['arg2']:
 
         mtsim.mt_spawn(sssp.sssp_g500_migrate, {'arg1': args['arg1'], 'arg2': x})
     
@@ -109,25 +109,14 @@ def main():
     # This commented out chunk is a second potential way tp get start values for a BFS
     '''rand_root = rand.randint(0, N-1)
 
-    level1_rand_nodes = [] ######### 'malloc'?
-    #***************#
-    #mtsim.mt_array_malloc(level1_rand_nodes, mtsim.mt_block_cyclic, [0,16,1])
+    level1_rand_nodes = []
 
     I = np.nonzero(G[:][rand_root])[1]
     for i in I:
         level1_rand_nodes.append(i)  # and THESE are the level 1 nodes
-    #***************#
-    #cnt=0
-    #for i in G[:][rand_root]:
-    #    if i != 0: 
-    #        mtsim.mt_array_write(level1_rand_nodes, cnt, i)
-    #        cnt+=1
-            
-        
+    
     if len(level1_rand_nodes) > NBFS:  
         level1_rand_nodes = level1_rand_nodes[0:NBFS]
-        #***************#
-        # idk about the 'shortening'
     else:
         NBFS = len(level1_rand_nodes)
     print(f'{rand_root}: {level1_rand_nodes}') '''

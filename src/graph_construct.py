@@ -8,7 +8,7 @@ import csv
 
 import convert_graph_formats as convert
 
-def random_graph_gen(n, G): # not Tree
+def random_graph_gen(n, G): # random number of nodes and edges
 
     # n == rand number of nodes (by hundreds for now)
 
@@ -67,7 +67,7 @@ def print_dG(n, adjMatrix):
     #print(']')
     return
     
-def kernel1_g500(edgelist):
+def kernel1_g500(edgelist): # Graph500
     
     # Remove self edges
     for k, x in enumerate(edgelist):
@@ -88,7 +88,7 @@ def kernel1_g500(edgelist):
     H = FW.copy().tocsr()
     G = H
     
-    # G[G != 0] = 1         # turn vertex matrix values into 1s so graph is undirected?
+    # G[G != 0] = 1         # turn vertex matrix values into 1s
 
     DictG = convert.CSRtoDict(G) # generates CSV file of graph
     convert.dictToCSV(DictG)
@@ -107,7 +107,7 @@ def main():
 
     sparse.save_npz("text/test_csr_matrix_000.npz", G)
 
-    # Generation Method 2 -- IGNORE
+    # Generation Method 2
     #plt.clf()
     #G = nx.DiGraph()
     #node = rand.randint(1,9)

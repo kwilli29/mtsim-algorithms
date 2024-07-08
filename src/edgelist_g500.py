@@ -1,17 +1,15 @@
-import networkx as nx
-#import matplotlib.pyplot as plt
 import random as rand
 import numpy as np
 import csv
 import convert_graph_formats as convert
 
-# APROX. CUSTOM TEENY #
+# APROX. CUSTOM TEENY # 
 SCALE_TEENY = 10
 EDGEF_TEENY = 16
 SIZEBFS64TE = 0.00000026
 SIZEBFS48TE = 0.00000020
 
-# TOY #
+# TOY #             # Graph500 #
 SCALE_TINY = 26
 EDGEF_TINY = 16
 SIZEBFS64TI = 0.017
@@ -38,7 +36,6 @@ def kronecker_generator(SCALE, edgefactor):
     # Compare w/ probabilities and set bits of inidicies
     #print('Compare w/ probabilities')
     for bit_i in range(1, SCALE+1):
-        #print(bit_i)
 
         randib = np.random.random_sample((M,))  # generate random 1d array every cycle
         randjb = np.random.random_sample((M,))
@@ -46,7 +43,7 @@ def kronecker_generator(SCALE, edgefactor):
         ii_bit = [1 if i > ab else 0 for i in randib] # create some sort of random 1/0 mapping
 
         jj_bit = [1 if j > ( c_norm*ii_bit[k] + (a_norm*(int(ii_bit[k]) ^ 1)) ) else 0 for k,j in enumerate(randjb)]
-        # different A,B,C values affect how generally high/lox the numbers are in i&j
+        # different A,B,C values affect how generally high/low the numbers are in i&j
 
         iijj_arr = np.array([ii_bit,jj_bit])
 
@@ -58,7 +55,6 @@ def kronecker_generator(SCALE, edgefactor):
         #return_array[0:1][:] = return_array[0:1][:] + scalar_iijj_arr # np.multiply((2**(bit_i-1)), iijj_arr[0:1])
 
         # [ [...] [...] ]         [ [...] [...] ]
-    # print(return_array)
 
     # Generate weights
     #print('Generate weights')
@@ -68,7 +64,7 @@ def kronecker_generator(SCALE, edgefactor):
     #print('Permute vertex labels')
     p = np.random.permutation(N)
 
-    for i, rows in enumerate(return_array[0:1]):  # unsure if this is correct - but I think it is
+    for i, rows in enumerate(return_array[0:1]):  # !!!!
         for j, cols in enumerate(rows):
             if int(return_array[i][j]) == 1024:
                 print(int(return_array[i][j]))
@@ -83,7 +79,7 @@ def kronecker_generator(SCALE, edgefactor):
     #print('Permute edgelist')
     p = np.random.permutation(M)
 
-    for i, rows in enumerate(return_array):      # unsure if this is correct - but I think it is
+    for i, rows in enumerate(return_array):        # !!!!
         for j, cols in enumerate(rows):
             return_array[i][j] = return_array[i][p[j]]
 

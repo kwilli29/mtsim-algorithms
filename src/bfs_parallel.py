@@ -32,7 +32,6 @@ def bfs_g500_migrate(args): #(F, root):
 
     to_visit = [0]*N # allocate vector
     #***************#
-    #mtsim.mt_array_malloc(to_visit, mtsim.mt_single, [mtsim.current_node]) # allocate vector
     mtsim.mt_array_malloc(to_visit, mtsim.mt_block_cyclic, [0, 2, 16])
     for i,x in enumerate(to_visit): mtsim.mt_array_write(to_visit, i, 0) # write
 
@@ -40,7 +39,7 @@ def bfs_g500_migrate(args): #(F, root):
     #***************#
     mtsim.mt_array_write(to_visit, 0, root) # write
 
-    lastk = 1 # 0?, 1 I thknk
+    lastk = 1
     for k in range(N):
         v = to_visit[k]
         #***************#
@@ -49,18 +48,18 @@ def bfs_g500_migrate(args): #(F, root):
         if v == 0: break
         I = np.nonzero(G[:][v])[0] # vector allocated
         #***************#
-        #mtsim.mt_array_malloc(I, mtsim.mt_single, [mtsim.current_node])
         mtsim.mt_array_malloc(I, mtsim.mt_block_cyclic, [0, 2, 16])
         cnt = 0
         for j in range(len(G)):
             # G[j][v] READ
-            if G[j][v] != 0:
+            Gj = mtsim.mt_array_read(G, j)
+            Gjv = mtsim.mt_array_read(Gj, v)
+            if Gjv != 0: # if G[j][v] != 0:
                 mtsim.mt_array_write(I, cnt, j) 
                 cnt+=1
 
         next = [] #  'malloc'
         #***************#
-        #mtsim.mt_array_malloc(next, mtsim.mt_single, [mtsim.current_node])
         mtsim.mt_array_malloc(next, mtsim.mt_block_cyclic, [0, 2, 16])
         cnt = 0
 
@@ -85,7 +84,6 @@ def bfs_g500_migrate(args): #(F, root):
 
         nums = list(range(lastk, len(next)+lastk))
         #***************#
-        #mtsim.mt_array_malloc(nums, mtsim.mt_single, [mtsim.current_node])
         mtsim.mt_array_malloc(nums, mtsim.mt_block_cyclic, [0, 2, 16])
         for j in range(lastk, len(next)+lastk): mtsim.mt_array_write(nums, j-lastk, j)
 

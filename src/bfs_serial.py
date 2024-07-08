@@ -11,8 +11,6 @@ import convert_graph_formats as convert
 ## This is a serial Breadth First Search Algorithm that can take in a few different types of graphs formats ##
 ## For reference mostly ##
 
-## Only need to worry about the bfs_g500_serial function ##
-
 def bfs_simple_serial(adjList, root):
 
     queue = [root]
@@ -70,27 +68,8 @@ def bfs_g500_serial(F, root):
     ## TODO: Think of better way to keep track of info ##
 
 def main():
-
-    '''
-    n, numEdges, adjMatrix = convert.read_kfile()
-    # adjList = convert.matTolist(adjMatrix, n)
-    # print(adjList)
-
-    F = convert.matToCSR(adjMatrix, n)
-    root = 1 # ?
-    # serial_visited = bfs_simple_serial(adjList, root)
-    serial_parent = bfs_g500_serial(F, root)
-
-    print(f'Parent: {serial_parent}\nLength:{len(serial_parent)}')
-    print()
-    print(f'Visited: {serial_visited}\nLength:{len(serial_visited)}')
-    print()
-    '''
-    #'''
     
     G = convert.read_g500_file()
-    
-    # Parallel: search keys for a handful of random starting points to concurrently run bfs from
 
     # Kernel 2
     root = 1 # serial bfs
@@ -101,7 +80,23 @@ def main():
     #print(f'Visited: {list(map(int, visited))}\nLength:{len(visited)}')
     print()
     print('end')
-    #'''
+
+
+    '''
+    n, numEdges, adjMatrix = convert.read_kfile()
+    # adjList = convert.matTolist(adjMatrix, n)
+    # print(adjList)
+
+    F = convert.matToCSR(adjMatrix, n)
+    root = 1 # 
+    # serial_visited = bfs_simple_serial(adjList, root)
+    serial_parent = bfs_g500_serial(F, root)
+
+    print(f'Parent: {serial_parent}\nLength:{len(serial_parent)}')
+    print()
+    print(f'Visited: {serial_visited}\nLength:{len(serial_visited)}')
+    print()
+    '''
 
     return
 

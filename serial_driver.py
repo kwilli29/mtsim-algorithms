@@ -14,6 +14,8 @@ import src.bfs_serial as bfs
 import src.sssp_serial as sssp
 import validate
 
+## Driver derived from Graph500 driver code ##
+
 # APROX. CUSTOM TEENY #
 SCALE_TEENY = 10
 EDGEF_TEENY = 16

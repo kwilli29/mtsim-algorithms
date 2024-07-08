@@ -15,7 +15,6 @@ def sssp_g500_migrate(args): #(F, root):
 
     #G = F.toarray() # unpack into a 2d array 
 
-    # N = array of sizes of all the lists in graph I think?
     N = len(G[0]) # N = # of verts / row of matrix I 
 
     d = [np.inf]*N #### allocate array
@@ -48,9 +47,6 @@ def sssp_g500_migrate(args): #(F, root):
         cnt+=1  
 
     while len(Q) > 0:
-        #print('Q: ', end='')
-        #for x in Q: print(x, end=' ')
-        #print()
 
         mini_dist = np.inf
         for i,k in enumerate(Q):
@@ -117,7 +113,7 @@ def sssp_g500_migrate(args): #(F, root):
                 #***************# # write
                 mtsim.mt_array_write(parent, u, v) # write 
 
-    # reconstruct path
+    # reconstruct path # Not part of MTSim, for verification
     for t in range(N):
         path = []
         curr = t
@@ -128,7 +124,7 @@ def sssp_g500_migrate(args): #(F, root):
 
         rev_path = np.array(path)[::-1].tolist()
         #print(f'{root} -> {t} = {rev_path}')
-    print()
+    #print()
 
     mtsim.mt_die()
     return (parent, d)

@@ -129,7 +129,7 @@ def main():
     n = len(G.toarray()[0])
 
     # Kernel 3
-    root = 0 # serial bfs
+    root = 0 # serial sssp
     parent, d = sssp_g500_serial(G, root)
 
 
@@ -150,8 +150,6 @@ def main():
     for k,v in adjList.items():
         print(f'{k}:{v}')
     #'''
-
-    print('end')
 
     return
 
