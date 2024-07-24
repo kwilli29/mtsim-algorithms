@@ -91,8 +91,10 @@ def kernel1_g500(edgelist): # Graph500
     # G[G != 0] = 1         # turn vertex matrix values into 1s & make undirected
                             # else it is a matrix where A[i][j]=weight == node (i,j)=weight
 
+    filename = 'src/csv/graph_generation_000.csv'
+
     DictG = convert.CSRtoDict(G) # generates CSV file of graph
-    convert.dictToCSV(DictG)
+    convert.dictToCSV(DictG, filename)
 
     return G
 

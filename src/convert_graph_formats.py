@@ -89,7 +89,7 @@ def CSRtoDict(csr):
 
     return D
 
-def dictToCSV(D):
+def dictToCSV(D, filename = 'src/csv/graph_generation_000.csv'):
     fields = ['node1', 'node2', 'weight']
     filename = 'src/csv/graph_generation_000.csv'
 

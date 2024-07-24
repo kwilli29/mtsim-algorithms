@@ -51,6 +51,8 @@ def main():
         with redirect_stdout(f):
             print(G)
 
+    print('Complete')
+
     return
 
 if __name__ == '__main__':
