@@ -69,7 +69,7 @@ def bfs_g500_serial(F, root):
 
 def main():
     
-    G = convert.read_g500_file()
+    G = convert.read_g500_file('text/test_csr_matrix_000.npz')
 
     # Kernel 2
     root = 1 # serial bfs

@@ -80,15 +80,16 @@ def kernel1_g500(edgelist): # Graph500
 
     # Create matrix & make sure it's square
 
-    # F = sparse.csr_matrix((np.ones((len(edgelist[0]),), dtype=int), (edgelist[0], (edgelist[1]))), shape=(N,N), dtype=float)
-    FW = sparse.csr_matrix((list(edgelist[2]), (edgelist[0], (edgelist[1]))), shape=(N,N), dtype=float)
+    # F = sparse.csr_matrix((np.ones((len(edgelist[0]),), dtype=int), (edgelist[0], (edgelist[1]))), shape=(N,N), dtype=float) # Unweighted - replace FW with F
+    FW = sparse.csr_matrix((list(edgelist[2]), (edgelist[0], (edgelist[1]))), shape=(N,N), dtype=float) # Weighted
 
     # Symmetrize to model an undirected graph
     FW = FW + FW.transpose()
     H = FW.copy().tocsr()
     G = H
     
-    # G[G != 0] = 1         # turn vertex matrix values into 1s
+    # G[G != 0] = 1         # turn vertex matrix values into 1s & make undirected
+                            # else it is a matrix where A[i][j]=weight == node (i,j)=weight
 
     DictG = convert.CSRtoDict(G) # generates CSV file of graph
     convert.dictToCSV(DictG)

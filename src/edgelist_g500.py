@@ -15,16 +15,16 @@ EDGEF_TINY = 16
 SIZEBFS64TI = 0.017
 SIZEBFS48TI = 0.013
 
-def kronecker_generator(SCALE, edgefactor):
+def kronecker_generator(SCALE, edgefactor, filename='src/text/edgelist_test_000.txt'):
     # Set number of verts N and edges M
     N = 2**SCALE
     M = edgefactor*N
 
     # Set initiator probabilities
-    init_probs = [0.57, 0.19, 0.19]
-    A, B, C = init_probs
+    init_probs = [0.57, 0.19, 0.19,  0.05]
+    A, B, C, D = init_probs
 
-    # Create index arrays
+    # Create index arrays - ijw = return_array
     # return_array = [[1]*M]*3
     return_array = np.ones((3, M), dtype=float)
 
@@ -88,7 +88,9 @@ def kronecker_generator(SCALE, edgefactor):
     # Adjust to zero-based labels
     # print('No need to zero-based labels in Python')
 
-    with open('src/text/edgelist_test_003.txt', 'w') as f:
+
+    # save edgelist to a file
+    with open(filename, 'w') as f:
         for x in return_array:
             for k in x:
                 print(k, end=' ', file=f)
